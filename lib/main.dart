@@ -9,7 +9,6 @@ import 'firebase_options.dart';
 import 'screens/chat_screen.dart';
 import 'screens/homepage_screen.dart';
 import 'screens/settings_screen.dart';
-import 'widgets/bottom_nav_bar.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +34,8 @@ class AuthenticationGate extends StatefulWidget {
 }
 
 class _AuthenticationGateState extends State<AuthenticationGate> {
+  int index = 0;
+
   @override
   Widget build(BuildContext context) => StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
@@ -61,31 +62,23 @@ class _AuthenticationGateState extends State<AuthenticationGate> {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData.dark(),
-            // routes: {
-            //   '/home': (context) => const HomePage(),
-            //   '/chat': (context) => const ChatScreen(),
-            //   '/settings': (context) => const SettingsScreen(),
-            //   '/calendar': (context) => const CalendarScreen()
-            // },
             home: Scaffold(
-              //key: navigationKey,
-              body: HomePageScreen(),
+              appBar: AppBar(
+                title: const Text('Graven'),
+                backgroundColor: CustomColors.secondary,
+              ),
+              body: screens[index],
               bottomNavigationBar: CurvedNavigationBar(
                 backgroundColor: Colors.transparent,
                 color: CustomColors.primary,
+                index: index,
                 items: const [
                   Icon(Icons.home_outlined, size: 30),
                   Icon(Icons.calendar_today_outlined, size: 30),
                   Icon(Icons.settings_outlined, size: 30),
                   Icon(Icons.chat_bubble_outline, size: 30),
                 ],
-                onTap: (index) {
-                  setState(() {
-                    // final navigationState = navigationKey.currentState!;
-                    // navigationState.setPage(index);
-                    print(index);
-                  });
-                },
+                onTap: (_index) => setState(() => index = _index),
               ),
             ),
           ); // show your app’s home page after login
