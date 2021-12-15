@@ -1,15 +1,14 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:flutterfire_ui/auth.dart';
+import 'package:gravenv2_app/screens/calendar_screen.dart';
+import 'package:gravenv2_app/theme/colors.dart';
 import 'firebase_options.dart';
-import 'screens/auth_screen.dart';
-import 'screens/calendar_screen.dart';
 import 'screens/chat_screen.dart';
 import 'screens/homepage_screen.dart';
 import 'screens/settings_screen.dart';
-import 'theme/colors.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,14 +35,21 @@ class AuthenticationGate extends StatefulWidget {
 
 class _AuthenticationGateState extends State<AuthenticationGate> {
   int index = 0;
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) => StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (ctx, userSnapshot) {
-          if (!userSnapshot.hasData) {
-            //token found
-            return const AuthScreen();
+        builder: (context, snapshot) {
+          // User is not signed in - show a sign-in screen
+          if (!snapshot.hasData) {
+            return const SignInScreen(
+              providerConfigs: [
+                EmailProviderConfiguration(),
+                GoogleProviderConfiguration(
+                  clientId: 'xxxx-xxxx.apps.googleusercontent.com',
+                ),
+              ],
+            );
           }
 
           final List<Widget> screens = [
@@ -58,14 +64,7 @@ class _AuthenticationGateState extends State<AuthenticationGate> {
             theme: ThemeData.dark(),
             home: Scaffold(
               appBar: AppBar(
-                centerTitle: true,
-                title: const Text(
-                  'Graven',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 30,
-                  ),
-                ),
+                title: const Text('Graven'),
                 backgroundColor: CustomColors.secondary,
                 actions: [
                   IconButton(
@@ -78,7 +77,6 @@ class _AuthenticationGateState extends State<AuthenticationGate> {
               bottomNavigationBar: CurvedNavigationBar(
                 backgroundColor: Colors.transparent,
                 color: CustomColors.primary,
-                height: 50,
                 index: index,
                 items: const [
                   Icon(Icons.home_outlined, size: 30),

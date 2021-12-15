@@ -128,6 +128,19 @@ class _GravenCalendarState extends State<GravenCalendar> {
         .toList();
   }
 
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    if (!isSameDay(_selectedDay, selectedDay)) {
+      setState(() {
+        _selectedDay = selectedDay;
+        _focusedDay = focusedDay;
+        _rangeStart = null; // Important to clean those
+        _rangeEnd = null;
+      });
+
+      _selectedEvents.value = _getEventsForDay(selectedDay);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -148,18 +161,9 @@ class _GravenCalendarState extends State<GravenCalendar> {
             outsideDaysVisible: false,
           ),
           selectedDayPredicate: (day) {
-            return isSameDay(_selectedDay, day);
+            return isSameDay(day, _selectedDay);
           },
-          onDaySelected: (selectedDay, focusedDay) {
-            setState(() {
-              if (selectedDay == focusedDay) {
-                _selectedEvents.value = _getUpcomingEvents(selectedDay);
-              }
-              _selectedDay = selectedDay;
-              _focusedDay = focusedDay; // update `_focusedDay` here as well
-              _selectedEvents.value = _getEventsForDay(selectedDay);
-            });
-          },
+          onDaySelected: _onDaySelected,
           onPageChanged: (DateTime focusedDay) {
             setState(() {
               _focusedDay = focusedDay;

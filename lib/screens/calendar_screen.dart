@@ -5,7 +5,7 @@ class CalendarScreen extends StatelessWidget {
   const CalendarScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => const Scaffold(
+  Widget build(BuildContext context) => Scaffold(
         body: GravenCalendar(),
       );
 }
