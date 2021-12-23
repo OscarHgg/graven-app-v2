@@ -57,28 +57,11 @@ class _AuthenticationGateState extends State<AuthenticationGate> {
             debugShowCheckedModeBanner: false,
             theme: ThemeData.dark(),
             home: Scaffold(
-              appBar: AppBar(
-                centerTitle: true,
-                title: const Text(
-                  'Graven',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 30,
-                  ),
-                ),
-                backgroundColor: CustomColors.secondary,
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.exit_to_app),
-                    onPressed: () => FirebaseAuth.instance.signOut(),
-                  ),
-                ],
-              ),
               body: screens[index],
               bottomNavigationBar: CurvedNavigationBar(
                 backgroundColor: Colors.transparent,
                 color: CustomColors.primary,
-                height: 50,
+                height: 70,
                 index: index,
                 items: const [
                   Icon(Icons.home_outlined, size: 30),
