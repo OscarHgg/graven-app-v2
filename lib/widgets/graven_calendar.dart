@@ -141,14 +141,58 @@ class _GravenCalendarState extends State<GravenCalendar> {
     }
   }
 
+  void _showMaterialDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Material Dialog'),
+            content: Text('Hey! I am Coflutter!'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Close')),
+              TextButton(
+                onPressed: () {
+                  print('HelloWorld!');
+                  _dismissDialog();
+                },
+                child: Text('HelloWorld!'),
+              )
+            ],
+          );
+        });
+  }
+
+  _dismissDialog() {
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
+        const SizedBox(
+          height: 60,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton.icon(
+            onPressed: () {
+              _showMaterialDialog();
+            },
+            icon: const Icon(Icons.add),
+            label: const Text('Add Event'),
+            style: ElevatedButton.styleFrom(
+              primary: CustomColors.primary,
+            ),
+          ),
+        ),
         TableCalendar<Event>(
           firstDay: DateTime.utc(2021, 12, 01),
           lastDay: DateTime.utc(2024, 12, 31),
-          focusedDay: DateTime.now(),
+          focusedDay: _focusedDay,
           calendarStyle: const CalendarStyle(
             selectedDecoration: BoxDecoration(
               color: CustomColors.primary,

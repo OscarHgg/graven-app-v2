@@ -23,7 +23,7 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
-  var _isLoggedIn = false;
+  var _isLoggedIn = true;
 
   var _userEmail = '';
   var _userName = '';
@@ -59,24 +59,34 @@ class _AuthFormState extends State<AuthForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Card(
-          margin: const EdgeInsets.all(20),
-          child: SingleChildScrollView(
+    return SizedBox(
+      width: double.infinity,
+      height: double.infinity,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 30,
+              left: 20,
+              right: 20,
+              bottom: 10,
+            ),
+            child: Image.asset('assets/images/Graven_logo-2.png'),
+          ),
+          SingleChildScrollView(
               child: Padding(
             padding: const EdgeInsets.all(16),
             child: Form(
               key: _formKey,
               child: Column(
                 //only takes as much space as needed
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: MainAxisSize.max,
                 children: [
-                  Container(
-                      child: Image.asset('assets/images/graven_logo-temp.png'),
-                      height: 175,
-                      width: 250),
                   if (!_isLoggedIn) UserImagePicker(_pickedImage),
                   TextFormField(
+                    style: const TextStyle(
+                      fontSize: 24,
+                    ),
                     key: const ValueKey('email'),
                     validator: (value) {
                       if (value!.isEmpty || !value.contains('@')) {
@@ -86,9 +96,9 @@ class _AuthFormState extends State<AuthForm> {
                       }
                     },
                     keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Email',
-                      fillColor: Theme.of(context).backgroundColor,
+                      fillColor: CustomColors.secondary,
                     ),
                     onSaved: (value) {
                       _userEmail = value.toString();
@@ -96,6 +106,9 @@ class _AuthFormState extends State<AuthForm> {
                   ),
                   if (!_isLoggedIn)
                     TextFormField(
+                      style: const TextStyle(
+                        fontSize: 24,
+                      ),
                       key: const ValueKey('username'),
                       validator: (value) {
                         if (value!.isEmpty || value.length < 5) {
@@ -104,15 +117,18 @@ class _AuthFormState extends State<AuthForm> {
                           return null;
                         }
                       },
-                      decoration: InputDecoration(
-                        labelText: 'Username',
-                        fillColor: Theme.of(context).backgroundColor,
+                      decoration: const InputDecoration(
+                        labelText: 'Användarnamn',
+                         fillColor: CustomColors.secondary,
                       ),
                       onSaved: (value) {
                         _userName = value.toString();
                       },
                     ),
                   TextFormField(
+                    style: const TextStyle(
+                      fontSize: 24,
+                    ),
                     key: const ValueKey('password'),
                     validator: (value) {
                       if (value!.isEmpty || value.length < 6) {
@@ -122,8 +138,8 @@ class _AuthFormState extends State<AuthForm> {
                       }
                     },
                     decoration: const InputDecoration(
-                      labelText: 'Password',
-                      fillColor: CustomColors.primaryVariant,
+                      labelText: 'Lösenord',
+                      fillColor: CustomColors.secondary,
                     ),
                     obscureText: true,
                     onSaved: (value) {
@@ -136,17 +152,22 @@ class _AuthFormState extends State<AuthForm> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         primary: CustomColors.primaryVariant,
-                        fixedSize: const Size(150, 50),
+                        fixedSize: const Size(250, 50),
                       ),
-                      child: Text(_isLoggedIn ? 'Login' : 'Signup'),
+                      child: Text(_isLoggedIn ? 'Logga in' : 'Registrera', style: const TextStyle(fontSize: 24)),
                       onPressed: _trySubmit,
                     ),
                   if (!widget.isLoading)
                     TextButton(
+                      style: TextButton.styleFrom(
+                        primary: CustomColors.primaryVariant,
+                        fixedSize: const Size(250, 50),
+                      ),
                       child: Text(
-                        _isLoggedIn ? 'Register' : 'I already have an account',
+                        _isLoggedIn ? 'Registrera' : 'Jag har redan ett konto',
                         style: const TextStyle(
-                          color: CustomColors.primary,
+                          color: CustomColors.secondary,
+                          fontSize: 20,
                         ),
                       ),
                       onPressed: () {
@@ -158,7 +179,9 @@ class _AuthFormState extends State<AuthForm> {
                 ],
               ),
             ),
-          ))),
+          )),
+        ],
+      ),
     );
   }
 }

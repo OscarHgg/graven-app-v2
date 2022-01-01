@@ -43,17 +43,17 @@ class _UserImagePickerState extends State<UserImagePicker> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircleAvatar(
-              radius: 40,
-              backgroundColor: Colors.grey,
+              radius: 60,
+              backgroundColor: CustomColors.secondaryVariant,
               backgroundImage: _pickedImage != null
                   ? Image.file(_pickedImage!).image
-                  : null),
+                  : null),                  
           TextButton.icon(
-            label: const Text("Add picture",
-                style: TextStyle(fontSize: 10, color: CustomColors.primary)),
+            label: const Text("Lägg till bild",
+                style: TextStyle(fontSize: 20, color: CustomColors.secondary)),
             icon: const Icon(
               Icons.camera_alt_rounded,
-              color: CustomColors.primary,
+              color: CustomColors.secondary,
             ),
             onPressed: _pickImage,
           ),
